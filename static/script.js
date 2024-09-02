@@ -3,7 +3,9 @@ var API_ENDPOINT = "https://p7gg6q99kk.execute-api.us-east-1.amazonaws.com/prod"
 
 // AJAX POST request to save user data
 document.getElementById("CreateUser").onclick = function() {
-    var inputData = {    
+    var inputData = {   
+        "Username": $('Username').val(), 
+        "Password": $('#Password').val(),
         "firstName": $('#firstName').val(),
         "lastName": $('#lastName').val(),
         "email": $('#email').val(),

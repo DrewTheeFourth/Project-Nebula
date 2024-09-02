@@ -8,39 +8,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = htmlspecialchars($_POST['username']);
     $password = htmlspecialchars($_POST['password']);
     
-    // Validate the credentials by reading from users.txt
-    $usersFile = 'users.txt';
-    $validCredentials = false;
+    // API Gateway endpoint
+    $apiUrl = 'https://your-api-id.execute-api.your-region.amazonaws.com/authenticate'; // Replace with your API Gateway URL
 
-    if (file_exists($usersFile)) {
-        $file = fopen($usersFile, 'r');
-        if ($file) {
-            while (($line = fgets($file)) !== false) {
-                // Trim any whitespace and split username and password
-                $line = trim($line);
-                list($valid_username, $valid_password) = explode(',', $line);
-                
-                // Check if username and password match
-                if ($username === $valid_username && $password === $valid_password) {
-                    $validCredentials = true;
-                    break;
-                }
-            }
-            fclose($file);
-        } else {
-            echo "Error opening file.";
-        }
-    } else {
-        echo "User credentials file not found.";
-    }
+    // Prepare the data to send
+    $data = json_encode(['username' => $username, 'password' => $password]);
 
-    // Redirect to the dashboard page if credentials are valid
-    if ($validCredentials) {
-        // Start session and set username
+    // Initialize cURL
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+    // Execute the request
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Handle the response
+    $responseData = json_decode($response, true);
+    
+    if ($httpCode === 200) {
+        // Successful authentication
         $_SESSION['username'] = $username;
         header("Location: dashboard.php");
         exit();
     } else {
+        // Handle failed authentication
         header("Location: failed.html");
         exit();
     }
