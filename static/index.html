@@ -3,46 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZUBI LOGIN</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Updated link -->
+    <title>Student Management System</title>
+    <style>
+        body {
+            background-color: #f0f0f0; 
+            color: #333; 
+            font-family: Arial, sans-serif; 
+        }
+
+        h1, h2 {
+            color: #007bff; 
+        }
+
+        .container {
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #fff; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
+
+        input[type="text"], input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff; 
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2; 
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        #studentTable, #attendanceTable, #assignmentTable, #summaryTable {
+            display: none; 
+        }
+
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">Nebula</div>
-        <div class="user-info">
-            <i class="fas fa-user"></i> <!-- FontAwesome icon -->
-            <span>Welcome, User</span>
-        </div>
-    </header>
-
     <div class="container">
-        <div class="login-box">
-            <h1>AZUBI LOGIN</h1>
-            <form action="login.php" method="POST">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+        <h1>Student Management System</h1>
 
-                <div class="remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Remember Me</label>
-                </div>
-                
-                <button type="submit">Submit</button>
-
-                <div class="forgot-password">
-                    <a href="#">Forgot Password?</a>
-                </div>
-            </form>
+        <!-- Form to Add a New Student -->
+        <h2>Add Student</h2>
+        <div class="form-group">
+            <label for="email">Email (Primary Key):</label>
+            <input type="text" id="Email">
         </div>
+        
+        <div class="form-group">
+            <label for="name">Name (Sort Key):</label>
+            <input type="text" id="Name">
+        </div>
+
+        <div class="form-group">
+            <label for="cohort">Cohort:</label>
+            <input type="text" id="Cohort">
+        </div>
+
+        <div class="form-group">
+            <label for="nationality">Nationality:</label>
+            <input type="text" id="Nationality">
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Sex:</label>
+            <input type="text" id="Sex">
+        </div>
+
+        <input type="submit" id="savestudent" value="Save Student Data">
+        <p id="studentSaved"></p>
+
+        <!-- Button to Retrieve All Students -->
+        <input type="submit" id="getstudents" value="View All Students">
+
+        <!-- Dynamic Table to Display All Students -->
+        <div id="showStudents">
+            <table id="studentTable">
+                <thead>
+                    <tr id="studentTableHeader"></tr>
+                </thead>
+                <tbody id="studentTableBody"></tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- Form to Add Attendance -->
+        <h2>Add Attendance</h2>
+        <div class="form-group">
+            <label for="attendanceEmail">Email:</label>
+            <input type="text" id="Email">
+        </div>
+        <div class="form-group">
+            <label for="attendanceName">Name:</label>
+            <input type="text" id="Name">
+        </div>
+        <div class="form-group">
+            <label for="week1">Week 1:</label>
+            <input type="text" id="week1">
+        </div>
+        <div class="form-group">
+            <label for="week2">Week 2:</label>
+            <input type="text" id="week2">
+        </div>
+        <div class="form-group">
+            <label for="week3">Week 3:</label>
+            <input type="text" id="week3">
+        </div>
+        <div class="form-group">
+            <label for="week4">Week 4:</label>
+            <input type="text" id="week4">
+        </div>
+        <div class="form-group">
+            <label for="week5">Week 5:</label>
+            <input type="text" id="week5">
+        </div>
+        <input type="submit" id="saveAttendance" value="Save Attendance Data">
+        <p id="attendanceSaved"></p>
+
+        <!-- Button to Retrieve All Attendance -->
+        <input type="submit" id="getAttendance" value="View All Attendance">
+        
+        <!-- Dynamic Table to Display All Attendance -->
+        <div id="showAttendance">
+            <table id="attendanceTable">
+                <thead>
+                    <tr id="attendanceTableHeader"></tr>
+                </thead>
+                <tbody id="attendanceTableBody"></tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- Form to Add Assignment -->
+        <h2>Add Assignment</h2>
+        <div class="form-group">
+            <label for="assignmentEmail">Email:</label>
+            <input type="text" id="Email">
+        </div>
+        <div class="form-group">
+            <label for="assignmentName">Name:</label>
+            <input type="text" id="Name">
+        </div>
+        <div class="form-group">
+            <label for="assignmentWeek1">Week 1:</label>
+            <input type="text" id="week1">
+        </div>
+        <div class="form-group">
+            <label for="assignmentWeek2">Week 2:</label>
+            <input type="text" id="week2">
+        </div>
+        <div class="form-group">
+            <label for="assignmentWeek3">Week 3:</label>
+            <input type="text" id="week3">
+        </div>
+        <div class="form-group">
+            <label for="assignmentWeek4">Week 4:</label>
+            <input type="text" id="week4">
+        </div>
+        <div class="form-group">
+            <label for="assignmentWeek5">Week 5:</label>
+            <input type="text" id="week5">
+        </div>
+        <input type="submit" id="saveAssignment" value="Save Assignment Data">
+        <p id="assignmentSaved"></p>
+
+        <!-- Button to Retrieve All Assignments -->
+        <input type="submit" id="getAssignment" value="View All Assignments">
+        
+        <!-- Dynamic Table to Display All Assignments -->
+        <div id="showAssignment">
+            <table id="assignmentTable">
+                <thead>
+                    <tr id="assignmentTableHeader"></tr>
+                </thead>
+                <tbody id="assignmentTableBody"></tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- Button to Retrieve Summary -->
+        <h2>Get Summary</h2>
+        <input type="submit" id="getSummary" value="View Summary">
+        
+        <!-- Dynamic Table to Display Summary -->
+        <div id="showSummary">
+            <table id="summaryTable">
+                <thead>
+                    <tr id="summaryTableHeader"></tr>
+                </thead>
+                <tbody id="summaryTableBody"></tbody>
+            </table>
+        </div>
+
     </div>
 
-    <footer class="footer">
-        &copy; 2024 YourCompany
-    </footer>
-
-    <script src="script.js"></script>
+    <script src="scripts.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.min.js"></script>
 </body>
 </html>
